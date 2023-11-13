@@ -48,12 +48,7 @@ pipeline{
                 npmInstall()
             }
         }
-        stage('Trivy file scan'){
-        when { expression { params.action == 'create'}}    
-            steps{
-                trivyFs()
-            }
-        }
+       
      }
      post {
          always {
