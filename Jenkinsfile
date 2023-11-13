@@ -3,6 +3,13 @@ def COLOR_MAP = [
     'FAILURE' : 'danger',
     'SUCCESS' : 'good'
 ]
+tools{
+        jdk 'jdk17'
+        nodejs 'node16'
+    }
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
 
 pipeline{
     agent any
@@ -18,6 +25,33 @@ pipeline{
         stage('checkout from Git'){
             steps{
                 checkoutGit('https://github.com/Gaetanneo/Youtube-clone-App.git', 'main')
+            }
+        }
+        stage('sonarqube Analysis'){
+        when { expression { params.action == 'create'}}    
+            steps{
+                sonarqubeAnalysis()
+            }
+        }
+        stage('sonarqube QualitGate'){
+        when { expression { params.action == 'create'}}    
+            steps{
+                script{
+                    def credentialsId = 'Sonar-token'
+                    qualityGate(credentialsId)
+                }
+            }
+        }
+        stage('Npm'){
+        when { expression { params.action == 'create'}}    
+            steps{
+                npmInstall()
+            }
+        }
+        stage('Trivy file scan'){
+        when { expression { params.action == 'create'}}    
+            steps{
+                trivyFs()
             }
         }
      }
