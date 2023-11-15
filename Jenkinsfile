@@ -34,39 +34,31 @@ pipeline {
         }
 
         stage('sonarqube Analysis') {
-            when {
-                expression { params.action == 'create' }
-            }
+        when { expression { params.action == 'create' }}
             steps {
-                script {
-                    echo "Running SonarQube Analysis"
-                    // Add steps for SonarQube Analysis
-                }
-            }
-        }
+               sonarqubeAnalysis()
+           }
+       }
 
         stage('sonarqube QualitGate') {
             when {
-                expression { params.action == 'create' }
-            }
+                expression { params.action == 'create' }}
             steps {
                 script {
                     def credentialsId = 'Sonar-token'
                     echo "Running SonarQube Quality Gate"
                     qualityGate(credentialsId)
-                }
-            }
-        }
+               }
+           }
+       }
 
         stage('Npm') {
-            when {
-                expression { params.action == 'create' }
-            }
+            when {expression { params.action == 'create' }}
             steps {
-                echo "Running npmInstall"
-                npmInstall()
-            }
-        }
+                    sh 'npm install'
+                  
+           }
+       }
     }
 
     post {
