@@ -1,4 +1,4 @@
-@Library('Jenkins_shared_library') _  #name used in jenkins system for library
+@Library('Jenkins_shared_library') _
 def COLOR_MAP = [
     'FAILURE' : 'danger',
     'SUCCESS' : 'good'
@@ -24,7 +24,7 @@ pipeline{
         }
         stage('checkout from Git'){
             steps{
-                checkoutGit('https://github.com/Gaetanneo/Jenkins_shared_library.git', 'main')
+                checkoutGit('https://github.com/Gaetanneo/Youtube-clone-App.git', 'main')
             }
         }
         stage('sonarqube Analysis'){
@@ -53,7 +53,7 @@ pipeline{
          always {
              echo 'Slack Notifications'
              slackSend (
-                 channel: '#channel name',   #change your channel name
+                 channel: '#jenkins',
                  color: COLOR_MAP[currentBuild.currentResult],
                  message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} \n build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
                )
