@@ -24,7 +24,7 @@ pipeline{
         }
         stage('checkout from Git'){
             steps{
-                checkoutGit('https://github.com/Gaetanneo/Jenkins_shared_library.git', 'main')
+                checkoutGit('https://github.com/Gaetanneo/Youtube-clone-App.git', 'main')
             }
         }
         stage('sonarqube Analysis'){
