@@ -92,6 +92,18 @@ pipeline{
                 removeContainer()
             }
         }
+        stage('Kube deploy'){
+        when { expression { params.action == 'create'}}
+            steps{
+                kubeDeploy()
+            }
+        }
+        stage('kube deleter'){
+        when { expression { params.action == 'delete'}}
+            steps{
+                kubeDelete()
+            }
+        }
      }
      post {
          always {
